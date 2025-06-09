@@ -77,3 +77,38 @@ string encodeText(const string& text, const unordered_map<char, string>& huffman
     }
     return encodedText;
 }
+// Compress the encoded binary string to bytes
+vector<uint8_t> compress(const string& encodedText) {
+    vector<uint8_t> compressed;
+    string buffer;
+
+    for (size_t i = 0; i < encodedText.size(); i += 8) {
+        string byteStr = encodedText.substr(i, 8);
+        // Pad with zeros if needed
+        if (byteStr.size() < 8) {
+            byteStr.append(8 - byteStr.size(), '0');
+        }
+        uint8_t byte = bitset<8>(byteStr).to_ulong();
+        compressed.push_back(byte);
+    }
+
+    return compressed;
+}
+
+// Main compression function
+pair<unordered_map<char, string>, vector<uint8_t>> huffmanCompress(const string& text) {
+    // Build Huffman Tree
+    HuffmanNode* root = buildHuffmanTree(text);
+
+    // Generate Huffman Codes
+    unordered_map<char, string> huffmanCode;
+    generateCodes(root, "", huffmanCode);
+
+    // Encode text
+    string encodedText = encodeText(text, huffmanCode);
+
+    // Compress to bytes
+    vector<uint8_t> compressed = compress(encodedText);
+
+    return {huffmanCode, compressed};
+}
