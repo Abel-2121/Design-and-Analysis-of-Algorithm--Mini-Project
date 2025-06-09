@@ -112,3 +112,24 @@ pair<unordered_map<char, string>, vector<uint8_t>> huffmanCompress(const string&
 
     return {huffmanCode, compressed};
 }
+// Function to print compression statistics
+void printStats(const string& original, const vector<uint8_t>& compressed,
+                const unordered_map<char, string>& huffmanCode) {
+    size_t originalSize = original.size() * 8; // in bits (assuming 1 byte per char)
+    size_t compressedSize = compressed.size() * 8;
+    size_t tableSize = 0;
+
+    // Calculate size of code table (approximate)
+    for (const auto& pair : huffmanCode) {
+        tableSize += 8 + pair.second.size(); // char (1 byte) + code length in bits
+    }
+
+
+cout << "Original size: " << originalSize << " bits\n";
+    cout << "Compressed size: " << compressedSize << " bits\n";
+    cout << "Code table size: " << tableSize << " bits\n";
+    cout << "Total compressed size: " << (compressedSize + tableSize) << " bits\n";
+    cout << "Compression ratio: "
+         << (double)(compressedSize + tableSize) / originalSize * 100 << "%\n";
+
+    cout << "\nHuffman Codes:\n";
