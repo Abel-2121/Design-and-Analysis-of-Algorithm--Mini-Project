@@ -21,3 +21,38 @@ struct Compare {
         return l->freq > r->freq;
     }
 };
+// Function to build Huffman Tree and return root
+HuffmanNode* buildHuffmanTree(const string& text) {
+    // Count frequency of each character
+    unordered_map<char, unsigned> freqMap;
+    for (char ch : text) {
+        freqMap[ch]++;
+    }
+
+    // Create priority queue (min heap)
+    priority_queue<HuffmanNode*, vector<HuffmanNode*>, Compare> minHeap;
+
+    // Create leaf nodes and add to min heap
+    for (auto pair : freqMap) {
+        minHeap.push(new HuffmanNode(pair.first, pair.second));
+    }
+
+    // Build Huffman Tree
+    while (minHeap.size() != 1) {
+        // Extract two nodes with minimum frequency
+        HuffmanNode* left = minHeap.top();
+        minHeap.pop();
+
+        HuffmanNode* right = minHeap.top();
+        minHeap.pop();
+
+        // Create internal node with sum of frequencies
+        HuffmanNode* internal = new HuffmanNode('\0', left->freq + right->freq);
+        internal->left = left;
+        internal->right = right;
+
+        minHeap.push(internal);
+    }
+
+    return minHeap.top();
+}
