@@ -133,3 +133,19 @@ cout << "Original size: " << originalSize << " bits\n";
          << (double)(compressedSize + tableSize) / originalSize * 100 << "%\n";
 
     cout << "\nHuffman Codes:\n";
+for (const auto& pair : huffmanCode) {
+        cout << "'" << pair.first << "' : " << pair.second << "\n";
+    }
+}
+
+int main() {
+    string text = "this is an example for huffman encoding";
+
+    cout << "Original text: " << text << "\n\n";
+
+    auto [huffmanCode, compressed] = huffmanCompress(text);
+
+    printStats(text, compressed, huffmanCode);
+
+    return 0;
+}
