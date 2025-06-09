@@ -1,0 +1,23 @@
+#include <iostream>
+#include <string>
+#include <queue>
+#include <unordered_map>
+#include <bitset>
+
+using namespace std;
+
+// Node structure for Huffman Tree
+struct HuffmanNode {
+    char data;
+    unsigned freq;
+    HuffmanNode *left, *right;
+
+    HuffmanNode(char data, unsigned freq) : data(data), freq(freq), left(nullptr), right(nullptr) {}
+};
+
+// Comparison object for priority queue
+struct Compare {
+    bool operator()(HuffmanNode* l, HuffmanNode* r) {
+        return l->freq > r->freq;
+    }
+};
