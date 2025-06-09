@@ -56,3 +56,24 @@ HuffmanNode* buildHuffmanTree(const string& text) {
 
     return minHeap.top();
 }
+// Traverse Huffman Tree and generate codes
+void generateCodes(HuffmanNode* root, string code, unordered_map<char, string>& huffmanCode) {
+    if (root == nullptr) return;
+
+    // Leaf node
+    if (!root->left && !root->right) {
+        huffmanCode[root->data] = code;
+    }
+
+    generateCodes(root->left, code + "0", huffmanCode);
+    generateCodes(root->right, code + "1", huffmanCode);
+}
+
+// Encode the input text using Huffman codes
+string encodeText(const string& text, const unordered_map<char, string>& huffmanCode) {
+    string encodedText;
+    for (char ch : text) {
+        encodedText += huffmanCode.at(ch);
+    }
+    return encodedText;
+}
